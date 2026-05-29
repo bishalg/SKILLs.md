@@ -1,0 +1,51 @@
+name: Agentic Evaluations
+
+on:
+  pull_request:
+    paths:
+      - 'agents/**'
+      - 'skills/**'
+      - 'orchestrator/**'
+      - 'evals/**'
+
+jobs:
+  run-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install yaml
+
+      - name: Run Router Evals
+        id: evals
+        run: |
+          echo "Running Agentic Evaluations..."
+          node evals/run-evals.js > eval-results.txt
+          cat eval-results.txt
+          
+          # Basic pass/fail check
+          if grep -q "FAIL" eval-results.txt; then
+            echo "Evals failed!"
+            exit 1
+          fi
+          
+      - name: Comment PR
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('eval-results.txt', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '### 🤖 Agentic Evaluation Report\n```\n' + results + '\n```'
+            });

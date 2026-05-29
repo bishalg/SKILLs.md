@@ -8,29 +8,26 @@ Before execution, the Router must ensure the following knowledge is loaded:
 - `/skills/design/audit.md`: Technical quality benchmarks.
 - `/skills/design/harden.md`: Production-readiness check.
 - `/skills/engineering/optimize/SKILL.md`: Performance budgets.
-- `/tools/manifest.json`: List of mandated verification tools.
+- `/contracts/handoff-schema.md`: Specifically the `fix-ticket` schema.
 
 ## 3. Constraints
 - **Modification Scope:** You are strictly a "Read-Only" auditor unless fixing minor typos or configuration errors.
-- **Mandated Tooling:** You MUST execute the following tools from `/tools/` and include their output in your artifact:
-  - `validate-oklch.js`: To ensure no HEX/RGB/HSL leaks.
-  - `run-a11y-audit.sh`: To check for basic accessibility markers.
-- **Reporting:** Your output is binary: **PASS** or **FAIL/BLOCK**.
+- **Mandated Tooling (MCP):** You MUST execute the following MCP tools and include their output in your artifact:
+  - `validate_oklch`: To ensure no HEX/RGB/HSL leaks.
+  - `run_a11y_audit`: To check for basic accessibility markers.
+- **Reporting:** Your output is either a PASS validation artifact or a **Self-Healing `fix-ticket` JSON**.
 
 ## 4. Handoff Protocol
-When your task is complete, you must output a **Validation Artifact** in the following format:
+If the audit succeeds, output a **Validation Artifact**:
 
 ```markdown
 ### 🛡️ Validation Artifact: [Feature Name]
-- **Status:** [PASS | FAIL | BLOCK]
+- **Status:** PASS
 - **Tool Output:**
-  - `oklch-check`: [Result]
-  - `a11y-audit`: [Result]
-- **Gate Results:**
-  - 🧪 Tests: [Pass/Fail]
-  - ♿ Accessibility: [Score/Issues]
-  - 🌐 i18n/L10n: [Pass/Fail]
-  - 🚀 Performance: [LCP/INP estimate]
-- **Required Fixes:** [Bulleted list of issues if Status != PASS]
+  - `validate_oklch`: [Result]
+  - `run_a11y_audit`: [Result]
 - **Verification Note:** [Confirmation that final state matches the Strategy Artifact]
 ```
+
+**⚠️ IF THE AUDIT FAILS:**
+Do NOT just output "FAIL". You MUST output a `fix-ticket` JSON object matching the schema in `/contracts/handoff-schema.md`. The Router will use this to automatically send the work back to the originating agent for self-healing.

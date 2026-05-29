@@ -57,3 +57,17 @@ Specific schema for when the **UI Refactor** passes the polished code to the **Q
 - **Changes:** Applied modular typography scale and removed side-stripe borders.
 - **QA Focus:** Verify contrast ratios on the glass cards and run accessibility audit.
 ```
+
+## 🚑 Self-Healing Fix Ticket (JSON)
+Specific schema generated when an automated tool or evaluation fails during the validation or testing phase.
+
+```json
+{
+  "type": "fix-ticket",
+  "error_type": "OKLCH_VIOLATION",
+  "failing_file": "src/components/Button.tsx",
+  "suggested_fix": "Replace hex #FFFFFF with oklch(100% 0 0) or the designated theme token.",
+  "severity": "high",
+  "retry_count": 0
+}
+```
