@@ -1,59 +1,65 @@
-# 🧠 AI Skills Workspace: V3 Autonomous Ecosystem
+# 🧠 AI Skills Workspace: V4 Platform & Observability
 
-**An autonomous, self-healing, and CI/CD integrated multi-agent ecosystem for 2026.**
+![Build Passing](https://img.shields.io/badge/Build-Passing-success)
+![Evals Score](https://img.shields.io/badge/Evals_Score-100%25-blue)
 
----
-
-## 🤖 Agentic Development Guide
-For deep dives into **Antigravity**, **Claude Code**, and **Gemini CLI**, see the [**Agentic Development Guide**](./AGENTIC_DEVELOPMENT.md).
+**An autonomous, self-healing multi-agent ecosystem with native MCP tooling and OpenTelemetry observability.**
 
 ---
 
-## 🚀 Phase 3: MCP, Self-Healing, and Agentic CI/CD
+## 🚀 Phase 4: Platform, DX, and Observability
 
-This repository is now fully upgraded to **V3**. It moves beyond state tracking into **autonomous correction** and **long-term memory**.
+This repository has been upgraded to **V4: The Distribution & Observability Layer**. We have optimized for scale, community contribution, and deep execution visibility.
 
-### 1. Model Context Protocol (MCP) Server
-We have migrated from raw shell scripts to an industry-standard **MCP Server** (`/mcp-server/`).
-- Exposes tools like `validate_oklch` and `run_a11y_audit` natively to MCP clients.
-- Built with `@modelcontextprotocol/sdk` and optimized for fast cold-starts via Bun.
-- See [Monorepo Integration](./topology/MONOREPO_INTEGRATION.md) for how to register this server in Claude Code or Cursor.
-
-### 2. Self-Healing Reflection Loops
-Agents now fix their own mistakes without human intervention.
-- **Fix Tickets:** If the `qa-validator` detects a failure, it outputs a standardized `fix-ticket.json` instead of a generic FAIL.
-- **Automated Routing:** The `ROUTER.md` intercepts this ticket, sends it back to the offending agent (e.g., `design-director`), and mandates a fix. The system allows 3 automated retries before triggering a human breakpoint.
-
-### 3. Agentic Memory Layer (`/memory/`)
-Agents learn from past sessions.
-- **Retrospective Agent:** Runs at the end of the `VALIDATE` phase to analyze the session code diffs and `fix-tickets`.
-- **Lessons Learned:** It updates `/memory/lessons-learned.md` with "Anti-Patterns Discovered" and "Token Wasters." The Router loads this during the `ORIENT` phase of future tasks.
-
-### 4. CI/CD for Agent Evals (`.github/workflows/`)
-We test our agents on every PR.
-- **Agentic Eval Action:** `.github/workflows/agentic-evals.yml` runs automatically when `/agents/` or `/skills/` are modified.
-- **Automated Scoring:** It runs the Golden Dataset (`/evals/router-eval.yaml`) and posts the score directly as a PR comment.
-
-### 5. Automated Skill Syncing (`/scripts/`)
-No more manual copy-pasting. Deploy updates to host projects instantly.
+### 1. The `skill-hub` CLI (`/packages/cli/`)
+Deploy the entire agentic framework to any project in seconds.
 ```bash
-bash scripts/sync-skills.sh --target ../my-nextjs-app
+npx skill-hub init
 ```
+- Automatically scaffolds the `.agents/` hierarchy.
+- Registers the local MCP server in your IDE config.
+- Installs core agents and skills.
+
+### 2. Native Model Context Protocol (MCP)
+All tools are now native **MCP Server** capabilities.
+- Tools like `validate_oklch` and `run_a11y_audit` are discovered dynamically by clients like **Claude Code** and **Cursor**.
+- Zero shell-script dependency; tools are executed in a typed, secure environment.
+
+### 3. Agentic Observability & Telemetry (`/observability/`)
+Absolute visibility into your agent waterfall.
+- **Trace Everything:** Every turn, tool call, and token is logged via **OpenTelemetry**.
+- **Visual Traces:** Spin up a local **Jaeger** instance via Docker to see execution timelines and latency.
+- **Token Telemetry:** Monitor Input/Output token consumption per agent to optimize costs.
+
+### 4. Self-Healing & Memory
+- **Autonomous Fixes:** System automatically routes `fix-tickets` back to agents for up to 3 retries.
+- **Lessons Learned:** Agents read the `/memory/` layer to avoid repeating past architectural mistakes.
+
+---
+
+## 📦 Integration Guide
+
+### Quick Start
+1.  **Initialize:** `npx skill-hub init`
+2.  **Monitor:** `docker-compose -f .agents/observability/docker-compose.yml up`
+3.  **Audit:** Run `node .agents/mcp-server/src/index.ts` to connect your IDE to the tool server.
 
 ---
 
 ## 📂 Workspace Structure
 
 - `/orchestrator/` - Dynamic Registry & Supervisor logic.
-- `/agents/` - Specialist personas with tool mandates.
-- `/skills/` - Pure domain knowledge (Design, Engineering, UX).
-- `/contracts/` - Handoff schemas and `fix-tickets`.
+- `/packages/cli/` - DX tool for distribution and init.
 - `/mcp-server/` - Native MCP Tool Server.
-- `/memory/` - Retrospective logs and lessons learned.
-- `/evals/` - Verification agents and CI datasets.
-- `/state/` - Session schemas.
-- `/scripts/` - Deployment and sync automation.
-- `/topology/` - Monorepo and localization guides.
+- `/observability/` - OpenTelemetry integration and Jaeger setup.
+- `/agents/` - Specialist personas with OTel instrumentation.
+- `/skills/` - Pure domain knowledge (Design, Engineering, UX).
+- `/docs/` - [Detailed Architecture Diagrams](./docs/ARCHITECTURE.md).
+
+---
+
+## 🤝 Contributing
+Ready to build the future of agentic engineering? Read our [**Contributor's Playbook**](./CONTRIBUTING.md).
 
 ---
 

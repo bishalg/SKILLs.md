@@ -1,6 +1,32 @@
-# 🏗️ Monorepo Integration & Localization
+# 🏗️ Monorepo Integration & MCP Registration
 
 In a large monorepo (NX, Turborepo), loading the entire `SKILLS` workspace into every sub-project's context is inefficient. Use these localization patterns to optimize token usage.
+
+---
+
+## 🛰️ Model Context Protocol (MCP) Registration
+
+To use the automated verification tools, you must register the local MCP server in your IDE or CLI.
+
+### For Cursor
+Add this to `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "skill-hub-tools": {
+      "command": "bun",
+      "args": ["run", ".agents/mcp-server/src/index.ts"],
+      "autoStart": true
+    }
+  }
+}
+```
+
+### For Claude Code
+Add this to `.claude.json` or run:
+```bash
+claude mcp add skill-hub-tools bun run .agents/mcp-server/src/index.ts
+```
 
 ---
 
@@ -13,35 +39,17 @@ Place a `.cursorrules` file in `apps/mobile/` or `apps/web/` to pin specific sub
 
 // Pin the Engineering Lead with Mobile-specific skills
 @SKILLS/agents/engineering-lead.md
-@SKILLS/skills/engineering/react-native/ (if exists)
 
-// Mandate local theme checks
-@SKILLS/tools/validate-oklch.js
+// Mandate local theme checks via MCP
+// The agent will automatically discover 'validate_oklch' via the MCP Server.
 ```
 
 ---
 
-## 💻 Claude CLI Config (Project-Root)
+## 📦 Deployment via `skill-hub` CLI
 
-Configure `CLAUDE.md` to point to the `ROUTER.md` but allow deep-linking to sub-agents.
-
-```markdown
-# Agentic Topology
-Primary Router: ./orchestrator/ROUTER.md
-
-When working in 'apps/marketing', prioritize:
-- Agent: design-director
-- Knowledge: skills/design/brand.md
-```
-
----
-
-## 📦 Deployment via Symlinks
-
-Instead of copying the repo, use symlinks to keep skills synced across the monorepo.
-
+Instead of manual symlinks, use the CLI to initialize a sub-project:
 ```bash
-ln -s /path/to/SKILLS/agents/design-director.md ./apps/web/.agents/design-director.md
+npx skill-hub init
 ```
-
-This ensures that any update to the central `SKILLS` repository is immediately available to all sub-projects.
+This will automatically scaffold the `.agents` directory and wire the MCP server.

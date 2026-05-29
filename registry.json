@@ -1,0 +1,22 @@
+{
+  "skills": [
+    {
+      "id": "liquid-glass",
+      "name": "Liquid Glass Aesthetic",
+      "description": "High-end frosted glass UI laws and implementation.",
+      "author": "bishalg",
+      "path": "skills/design/liquid-glass.md",
+      "mcp_tools_required": ["validate_oklch"],
+      "compatible_agents": ["design-director", "ui-refactor"]
+    },
+    {
+      "id": "react-19-optimistic",
+      "name": "React 19 Optimistic UI",
+      "description": "Native React 19 hooks for instant feedback loops.",
+      "author": "bishalg",
+      "path": "skills/engineering/react-19-optimistic-ui/",
+      "mcp_tools_required": [],
+      "compatible_agents": ["engineering-lead"]
+    }
+  ]
+}
