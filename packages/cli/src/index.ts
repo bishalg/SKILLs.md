@@ -15,7 +15,8 @@ program
 program
   .command('init')
   .description('Initialize the Agentic Orchestrator in the current project')
-  .action(async () => {
+  .option('--sandbox', 'Enable containerized tool execution', false)
+  .action(async (options) => {
     console.log(chalk.blue('🚀 Initializing Agentic Orchestrator...'));
     
     const hostRoot = process.cwd();
@@ -24,52 +25,52 @@ program
     try {
       await fs.ensureDir(agentsDir);
       
-      // We assume the global SKILLS repo is either local or we fetch core files
-      // For this implementation, we simulate copying from the package's internal assets
-      const coreDirs = ['orchestrator', 'agents', 'contracts', 'skills'];
+      const coreDirs = ['orchestrator', 'agents', 'contracts', 'skills', 'mcp-server'];
       
       console.log(chalk.gray('  - Copying core framework files...'));
-      // In a real published package, these would be bundled in 'assets/'
-      // Here we assume we are running from the source repo for demonstration
       const sourceRoot = path.resolve(__dirname, '../../..');
       
       for (const dir of coreDirs) {
-        await fs.copy(path.join(sourceRoot, dir), path.join(agentsDir, dir));
+        if (await fs.pathExists(path.join(sourceRoot, dir))) {
+          await fs.copy(path.join(sourceRoot, dir), path.join(agentsDir, dir));
+        }
       }
 
-      console.log(chalk.gray('  - Configuring MCP Server...'));
+      console.log(chalk.gray('  - Configuring MCP Server & Security...'));
       const mcpConfigPath = path.join(hostRoot, '.cursor/mcp.json');
       await fs.ensureDir(path.dirname(mcpConfigPath));
       
+      const command = options.sandbox ? "docker run skill-hub-mcp" : "bun";
+      const args = options.sandbox ? [] : ["run", path.join(agentsDir, "mcp-server/src/index.ts")];
+
       const mcpConfig = {
         mcpServers: {
           "skills-verification": {
-            "command": "bun",
-            "args": ["run", path.join(agentsDir, "mcp-server/src/index.ts")],
-            "autoStart": true
+            "command": command,
+            "args": args,
+            "autoStart": true,
+            "env": {
+              "SKILL_HUB_SANDBOX": String(options.sandbox)
+            }
           }
         }
       };
 
       await fs.writeJson(mcpConfigPath, mcpConfig, { spaces: 2 });
       
+      // Generate .env.example
+      await fs.writeFile(path.join(hostRoot, '.agents/.env.example'), 
+        "MAX_SESSION_COST=2.00\nTOKEN_THRESHOLD=15000\nSKILL_HUB_SANDBOX=false");
+
       console.log(chalk.green('✅ Initialization complete!'));
+      if (options.sandbox) console.log(chalk.cyan('🛡️  Secure Sandboxing enabled for MCP tools.'));
+      
       console.log(chalk.yellow('\nNext steps:'));
-      console.log(`1. Define your product in ${chalk.bold('PRODUCT.md')}`);
-      console.log(`2. Start the orchestrator via ${chalk.bold('ROUTER.md')}`);
+      console.log(`1. Configure budgets in ${chalk.bold('.agents/.env')}`);
+      console.log(`2. Define your product in ${chalk.bold('PRODUCT.md')}`);
     } catch (err: any) {
       console.error(chalk.red(`❌ Error during init: ${err.message}`));
     }
-  });
-
-program
-  .command('add <skill-name>')
-  .description('Add a specific skill bundle from the registry')
-  .action(async (skillName) => {
-    console.log(chalk.blue(`📦 Adding skill: ${skillName}...`));
-    // Simulate fetching from registry.json
-    console.log(chalk.gray(`  - Searching for ${skillName} in community registry...`));
-    console.log(chalk.green(`✅ Skill ${skillName} added successfully to .agents/skills/`));
   });
 
 program.parse();

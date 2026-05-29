@@ -1,12 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Agentic Session State",
-  "description": "Defines the structure for tracking multi-agent session progress and phase transitions.",
+  "description": "Defines the structure for tracking multi-agent session progress, phase transitions, and cost metrics.",
   "type": "object",
   "properties": {
     "session_id": { "type": "string" },
     "current_phase": {
-      "enum": ["ORIENT", "DESIGN", "BUILD", "REFINE", "VALIDATE", "COMPLETE"]
+      "enum": ["ORIENT", "DESIGN", "BUILD", "REFINE", "VALIDATE", "RETROSPECTIVE", "COMPACTION", "COMPLETE"]
+    },
+    "cumulative_cost": {
+      "type": "number",
+      "description": "Total USD spent on tokens for this session."
+    },
+    "token_usage": {
+      "type": "object",
+      "properties": {
+        "input": { "type": "integer" },
+        "output": { "type": "integer" }
+      }
     },
     "history": {
       "type": "array",
@@ -17,6 +28,7 @@
           "agent_id": { "type": "string" },
           "artifact_path": { "type": "string" },
           "status": { "enum": ["PENDING", "COMPLETED", "FAILED"] },
+          "cost": { "type": "number" },
           "human_approval": { "type": "boolean" }
         }
       }
