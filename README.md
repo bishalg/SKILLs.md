@@ -1,64 +1,63 @@
-# 🧠 AI Skills Workspace: Multi-Agent Edition
+# 🧠 AI Skills Workspace: V2 Dynamic Architecture
 
-**A hierarchical, multi-agent architecture for autonomous software engineering.**
+**A stateful, evaluated, and tool-augmented multi-agent ecosystem for 2026.**
 
-This repository implements the **Router/Sub-agent** pattern, designed to optimize the context window and reasoning depth of modern AI agents. By separating **Persona** (who the agent is) from **Knowledge** (what the agent knows), we achieve deterministic, high-fidelity code generation with minimal token waste.
+---
+
+## 🤖 Agentic Development Guide
+For deep dives into **Antigravity**, **Claude Code**, and **Gemini CLI**, see the [**Agentic Development Guide**](./AGENTIC_DEVELOPMENT.md).
+
+---
+
+## 🏗️ Phase 2: Evals, Tooling, and Token Efficiency
+
+This repository has been upgraded to **V2: Dynamic Infrastructure**. The core architecture now supports automated quality enforcement and stateful session management.
+
+### 1. Dynamic Skill Registry (`/orchestrator/registry.yaml`)
+We have moved away from hardcoded routing. The `registry.yaml` is the single source of truth for agent identities, keyword triggers, and context paths. The Router parses this dynamically to build its mission plan.
+
+### 2. Agentic Evaluation Framework (`/evals/`)
+Agents are tested like code.
+- **VERIFIER Agent:** A dedicated auditor that grades agent artifacts against the `/contracts/` using a quantitative [Grading Rubric](./evals/grading-rubric.md).
+- **Golden Datasets:** `/evals/router-eval.yaml` ensures the Router's intent-detection remains high-precision.
+
+### 3. State Management & HITL Breakpoints (`/state/`)
+The `ROUTER.md` now implements a **Breakpoint Protocol**. After the **DESIGN** phase, the system MUST pause for Human-in-the-Loop (HITL) approval before proceeding to implementation. This prevents runaway token burn on unapproved directions.
+
+### 4. Safe Tooling & Sandboxing (`/tools/`)
+Agents are now "Tool-Augmented."
+- **Mandated Verification:** The `qa-validator` MUST run the `validate-oklch.js` and `run-a11y-audit.sh` tools before issuing a verdict.
+- **Manifest:** All allowed tools are defined in `/tools/manifest.json`.
 
 ---
 
 ## 🏗️ Philosophy
 
-### 1. Context Isolation
-Agents are only as good as their context. In this architecture, a sub-agent only loads the specific "Skills" (knowledge files) it needs for its current task. This prevents "Reasoning Drift" and keeps the agent focused on its domain.
-
-### 2. Separation of Concerns
-- **Orchestrator (`/orchestrator`):** The non-coding "Brain." Manages the workflow and delegates.
-- **Agents (`/agents`):** Personas with strict identities, constraints, and handoff protocols.
-- **Skills (`/skills`):** Pure domain knowledge, design laws, and engineering standards.
-- **Contracts (`/contracts`):** Formal schemas for inter-agent communication.
-
-### 3. The 5-Phase Workflow
-Every feature request moves through a controlled pipeline:
-`ORIENT` → `DESIGN` → `BUILD` → `REFINE` → `VALIDATE`.
-
----
-
-## 🚀 Integration Guide
-
-### 🛰️ For AI IDEs (Cursor, Antigravity)
-To use this system, point your IDE to the `ROUTER.md` as the primary rule file.
-
-1. **Global Rules:** Add the path to `orchestrator/ROUTER.md` to your `.cursorrules` or project-wide instructions.
-2. **Task Activation:** When you issue a request, the Router will automatically identify the phase and instruct you (or another agent) to load the corresponding `/agents/` persona.
-
-### 💻 For Terminal AI (Claude Code)
-Integrate this into your `CLAUDE.md` to drive autonomous execution.
-
-```markdown
-# Agentic Workflow
-1. Start with `orchestrator/ROUTER.md` to plan the task.
-2. Load the assigned persona from `agents/`.
-3. Load the required knowledge from `skills/`.
-4. Produce the handoff artifact defined in `contracts/`.
-```
-
-### 🛠️ Manual Deployment
-If you are building an agentic loop manually:
-- **Phase 1:** Spawn a supervisor using `ROUTER.md`.
-- **Phase 2:** Supervisor calls `design-director.md` + `skills/design/*` to build the UI.
-- **Phase 3:** Supervisor calls `engineering-lead.md` + `skills/engineering/*` to implement logic.
+- **Context Isolation:** Sub-agents only load what they need.
+- **Separation of Concerns:** Persona (`/agents`) vs. Knowledge (`/skills`).
+- **Token Efficiency:** [Monorepo Localization Patterns](./topology/MONOREPO_INTEGRATION.md) for large-scale projects.
 
 ---
 
 ## 📂 Workspace Structure
 
-- `/orchestrator/` - Supervisor logic and routing table.
-- `/agents/` - Specialist personas (Design, UX, Engineering, QA).
-- `/skills/` - Domain knowledge and design laws.
-- `/contracts/` - Handoff schemas and artifact protocols.
-- `/examples/` - Workflow traces and mock interactions.
+- `/orchestrator/` - Dynamic Registry & Supervisor logic.
+- `/agents/` - Specialist personas with tool mandates.
+- `/skills/` - Pure domain knowledge (Design, Engineering, UX).
+- `/evals/` - Verification agents and grading rubrics.
+- `/tools/` - Sandboxed verification scripts and manifest.
+- `/state/` - Session schemas for tracking progress.
+- `/contracts/` - Handoff schemas.
+- `/topology/` - Monorepo and localization guides.
+
+---
+
+## 🚀 How to Run Evals
+1. **Artifact Check:** Pass an agent output to the `VERIFIER` agent.
+2. **Router Check:** Run the `router-eval.yaml` test cases through your IDE's evaluation harness.
+3. **Tool Check:** Manually verify tools via `node tools/validate-oklch.js .`.
 
 ---
 
 ## ⚖️ Disclosure & Origins
-This project curates original architectural research (The Agentic Layer, Liquid Glass) alongside synthesized best practices (Refactoring UI, UX Layers). See the [Manifesto](./AGENTIC_DEVELOPMENT.md) for the full 2026 vision.
+Original research (**Liquid Glass**, **Agentic Layer**) + Synthesized best practices (**Refactoring UI**, **UX Layers**).

@@ -1,0 +1,20 @@
+{
+  "tools": [
+    {
+      "id": "validate-oklch",
+      "name": "OKLCH Validator",
+      "description": "Scans CSS/TSX files for non-OKLCH colors (HEX, RGB, HSL).",
+      "command": "node tools/validate-oklch.js [target]",
+      "permissions": "read-only",
+      "mandated_for": ["qa-validator", "ui-refactor"]
+    },
+    {
+      "id": "run-a11y-audit",
+      "name": "A11y Auditor",
+      "description": "Runs a lightweight accessibility audit on the build output.",
+      "command": "bash tools/run-a11y-audit.sh [target]",
+      "permissions": "read-only",
+      "mandated_for": ["qa-validator"]
+    }
+  ]
+}

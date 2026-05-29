@@ -1,0 +1,16 @@
+# 🎯 Router Golden Dataset
+
+This dataset is used to evaluate the Router's accuracy in selecting the correct `agent_id` based on user intent.
+
+| ID | Prompt | Expected Agent |
+|---|---|---|
+| 001 | "I need to understand who our primary users are and what their main pain points are." | `ux-strategist` |
+| 002 | "Design a futuristic dashboard with frosted glass effects and high-contrast typography." | `design-director` |
+| 003 | "Implement the satellite data fetching logic using React Server Components." | `engineering-lead` |
+| 004 | "The buttons on the dashboard feel flat; they need better visual hierarchy and spacing." | `ui-refactor` |
+| 005 | "Run a full accessibility and performance audit on the newly implemented widget." | `qa-validator` |
+| 006 | "Create a user journey map for the checkout process." | `ux-strategist` |
+| 007 | "Check this artifact from the design director to see if it matches the handoff contract." | `verifier` |
+| 008 | "Refactor the CSS to ensure all colors are using the OKLCH color space." | `ui-refactor` |
+| 009 | "Add error boundary wrapping to the main application shell." | `engineering-lead` |
+| 010 | "Verify if the current mobile padding adheres to the 8pt grid system." | `ui-refactor` |

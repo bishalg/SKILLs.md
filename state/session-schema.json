@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agentic Session State",
+  "description": "Defines the structure for tracking multi-agent session progress and phase transitions.",
+  "type": "object",
+  "properties": {
+    "session_id": { "type": "string" },
+    "current_phase": {
+      "enum": ["ORIENT", "DESIGN", "BUILD", "REFINE", "VALIDATE", "COMPLETE"]
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": { "type": "string" },
+          "agent_id": { "type": "string" },
+          "artifact_path": { "type": "string" },
+          "status": { "enum": ["PENDING", "COMPLETED", "FAILED"] },
+          "human_approval": { "type": "boolean" }
+        }
+      }
+    },
+    "active_context": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["session_id", "current_phase"]
+}

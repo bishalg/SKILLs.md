@@ -1,0 +1,48 @@
+agents:
+  - id: ux-strategist
+    name: UX Strategist
+    trigger_keywords: ["strategy", "users", "goals", "flow", "workflow", "needs"]
+    required_context: ["/skills/ux/"]
+    dependencies: []
+    handoff_contract: "/contracts/handoff-schema.md"
+    persona_path: "/agents/ux-strategist.md"
+
+  - id: design-director
+    name: Design Director
+    trigger_keywords: ["brand", "ui", "css", "glass", "design", "aesthetic", "visual"]
+    required_context: ["/skills/design/"]
+    dependencies: ["ux-strategist"]
+    handoff_contract: "/contracts/handoff-schema.md"
+    persona_path: "/agents/design-director.md"
+
+  - id: engineering-lead
+    name: Engineering Lead
+    trigger_keywords: ["logic", "api", "components", "react", "typescript", "implementation"]
+    required_context: ["/skills/engineering/"]
+    dependencies: ["design-director"]
+    handoff_contract: "/contracts/handoff-schema.md"
+    persona_path: "/agents/engineering-lead.md"
+
+  - id: ui-refactor
+    name: UI Refactor
+    trigger_keywords: ["polish", "spacing", "hierarchy", "clutter", "typography"]
+    required_context: ["/skills/refactor/"]
+    dependencies: ["engineering-lead"]
+    handoff_contract: "/contracts/handoff-schema.md"
+    persona_path: "/agents/ui-refactor.md"
+
+  - id: qa-validator
+    name: QA Validator
+    trigger_keywords: ["test", "audit", "accessibility", "validate", "performance"]
+    required_context: ["/skills/design/audit.md", "/skills/design/harden.md"]
+    dependencies: ["ui-refactor"]
+    handoff_contract: "/contracts/handoff-schema.md"
+    persona_path: "/agents/qa-validator.md"
+
+  - id: verifier
+    name: Artifact Verifier
+    trigger_keywords: ["verify", "grade", "score", "check artifact"]
+    required_context: ["/contracts/handoff-schema.md", "/evals/grading-rubric.md"]
+    dependencies: []
+    handoff_contract: "/evals/VERIFIER.md"
+    persona_path: "/evals/VERIFIER.md"
